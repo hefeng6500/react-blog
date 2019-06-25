@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom"
 import * as server from "../../api/login";
 
 import "./index.scss";
 import Card from '../../components/Card/Card.js'
 import { List, Icon } from 'antd'
+import Aside from '../aside'
 
 class Index extends Component {
   constructor(props) {
@@ -31,7 +33,7 @@ class Index extends Component {
                   return (
                     <List.Item key={v.id}>
                       <h3 className="h3-title">
-                        <a href="#1">{v.title}</a>
+                        <Link to={'/article/' + v.id}>{v.title}</Link>
                       </h3>
 
                       <div className="info-list">
@@ -57,7 +59,7 @@ class Index extends Component {
                         <img className="banner-desc" alt="img" src={require("../../static/images/react16_image.png")} />
                         <div dangerouslySetInnerHTML={{ __html: v.describe }} ></div>
                         <div className="more">
-                          <a>阅读全文 ></a>
+                        <Link to={'/article/' + v.id}>阅读全文 ></Link>
                         </div>
                       </div>
                     </List.Item>
@@ -67,21 +69,7 @@ class Index extends Component {
             </List>
           </Card>
         </div>
-        <aside className="aside right">
-          <div className="right-card">
-            <div className="info-card">
-              <div className="info-card-header">
-                <img className="info-avatar" alt="头像" src={require('../../static/images/info-avatar.jpg')} />
-              </div>
-              <div className="info-card-body">
-                <div className="info-nickname">墨客行吟</div>
-                <div className="info-desc">
-                  向心求理，知行合一，一个永远在路上的修行者
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
+        <Aside />
       </div>
     );
   }

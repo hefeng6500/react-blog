@@ -22,10 +22,9 @@ class index extends Component {
         <div className="header-area">
           <div className="container clear">
             <div className="logo left">
-              <a>
+              <Link to='/'>
                 <span className="title">前端客栈</span>
-                <span className="describe">一个前端开发者的博客</span>
-              </a>
+                <span className="describe">一个前端开发者的博客</span></Link>
             </div>
             <Menu className="header-menu" mode="horizontal">
               {

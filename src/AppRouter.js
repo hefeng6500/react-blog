@@ -8,17 +8,18 @@ const AppRouter = () => (
     {
       routes.map((item, index) => {
         return (
-          <Route exact key={index} path={item.path} render={
-            () => {
-              if (item.auth) { // 该路由需要Token验证
-                let token = localStorage.getItem('token')
-                if (!token) {
-                  return <Redirect to="/login" />
-                }
-              }
-              return <item.component />
-            }
-          } ></Route>
+          <Route exact key={index} path={item.path} component={item.component} ></Route>
+          // <Route exact key={index} path={item.path} render={
+          //   () => {
+          //     if (item.auth) { // 该路由需要Token验证
+          //       let token = localStorage.getItem('token')
+          //       if (!token) {
+          //         return <Redirect to="/login" />
+          //       }
+          //     }
+          //     return <item.component />
+          //   }
+          // } ></Route>
         )
       })
     }
