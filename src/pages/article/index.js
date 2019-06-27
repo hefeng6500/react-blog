@@ -6,6 +6,8 @@ import Aside from '../aside'
 import './index.scss'
 
 import * as service from '../../api/article'
+import marked from '../../utils/marked';
+import 'highlight.js/styles/xcode.css';
 
 
 class index extends Component {
@@ -24,19 +26,20 @@ class index extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     // this.getDetails()
+    console.log(marked)
 
   }
 
   // 获取文章详情
-  getDetails = () =>{
+  getDetails = () => {
     const params = {
       id: this.props.match.params.id
     }
-    service.articleDetails(params).then(res=>{
+    service.articleDetails(params).then(res => {
       this.setState({
-        articleDetails: {...res.data}
+        articleDetails: { ...res.data }
       })
     })
   }
@@ -64,6 +67,9 @@ class index extends Component {
                 </div>
               </Col>
             </Row>
+            <div id="markdown-article" dangerouslySetInnerHTML={{__html: marked('``` console.log(123) ```')}}>
+
+            </div>
           </Card>
         </div>
         <Aside className="left" />
