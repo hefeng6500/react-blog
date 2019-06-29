@@ -15,21 +15,13 @@ class index extends Component {
     super(props);
     this.state = {
       articleDetails: {
-        title: 'React16免费视频教程（共28集）',
-        category: 'React',
-        tag: 'React',
-        createTime: '2019-06-25',
-        lastModifyTime: '2019-06-25',
-        isOriginal: true,
-        detailsHtml: ''
+
       }
     };
   }
 
   componentDidMount() {
-    // this.getDetails()
-    console.log(marked)
-
+    this.getDetails()
   }
 
   // 获取文章详情
@@ -38,8 +30,11 @@ class index extends Component {
       id: this.props.match.params.id
     }
     service.articleDetails(params).then(res => {
-      this.setState({
-        articleDetails: { ...res.data }
+      let response = JSON.parse(JSON.stringify(res))
+      this.setState((state) => {
+        return {
+          articleDetails: response
+        }
       })
     })
   }
@@ -60,14 +55,14 @@ class index extends Component {
                     <Icon type="folder" />
                     <span>{this.state.articleDetails.category}</span>
                   </span>
-                  <span title='标签' className="info-item">
+                  {/* <span title='标签' className="info-item">
                     <Icon type="tags" />
                     <span>{this.state.articleDetails.tag}</span>
-                  </span>
+                  </span> */}
                 </div>
               </Col>
             </Row>
-            <div id="markdown-article" dangerouslySetInnerHTML={{__html: marked('``` console.log(123) ```')}}>
+            <div id="markdown-article" dangerouslySetInnerHTML={{ __html:  this.state.articleDetails.content ? marked(this.state.articleDetails.content) : null }}>
 
             </div>
           </Card>
