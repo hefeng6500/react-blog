@@ -13,7 +13,7 @@
 }
 .container{
   margin: 0 auto;
-  width: $contentWidth;
+  width: $containerWidth;
 }
 .logo{
   line-height: 64px;
@@ -29,7 +29,8 @@
   }
 }
 .header-menu{
-  float: right;
+  margin-left: 20px !important;
+  float: left;
   a{
     font-size: 16px;
   }

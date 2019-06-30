@@ -1,16 +1,19 @@
-import React, {Component} from 'react'
-import marked from 'marked';
+import React, { Component } from 'react'
+import './index.scss'
+
+
+
 
 class index extends Component {
   constructor(props) {
     super(props);
-    this.state = {  };
+    this.state = {};
+  }
+  componentDidMount() {
   }
   render() {
     return (
-      <div>
-        <div id="markdown-area">123</div>
-        <div id="content-area"></div>
+      <div className="editor-page">
       </div>
     );
   }

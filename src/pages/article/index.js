@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
-import { Row, Col, Icon } from 'antd'
+import { Row, Col, Icon, Tag } from 'antd'
 
 import Card from '../../components/Card/Card.js'
 import Aside from '../aside'
-import './index.scss'
 
 import * as service from '../../api/article'
 import marked from '../../utils/marked';
 import 'highlight.js/styles/xcode.css';
 
+import './index.scss'
+import './marked.scss'
 
 class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      articleDetails: {
+      details: {
 
       }
     };
@@ -33,41 +34,46 @@ class index extends Component {
       let response = JSON.parse(JSON.stringify(res))
       this.setState((state) => {
         return {
-          articleDetails: response
+          details: response
         }
       })
     })
   }
   render() {
 
+
     return (
-      <div>
+      <div className="container">
         <div className="article-panel left">
           <Card>
-            <Row>
-              <Col span={12}>
-                <div className="info-list">
-                  <span title='最后修改时间' className="info-item">
-                    <Icon type="calendar" />
-                    <span>{this.state.articleDetails.createTime}</span>
-                  </span>
-                  <span title='分类' className="info-item">
-                    <Icon type="folder" />
-                    <span>{this.state.articleDetails.category}</span>
-                  </span>
-                  {/* <span title='标签' className="info-item">
-                    <Icon type="tags" />
-                    <span>{this.state.articleDetails.tag}</span>
-                  </span> */}
+            <h1 className="title">{this.state.details.title}</h1>
+
+            <div className="article-info clear">
+              <div className="avatar left">
+                <img alt="作者头像" src={require('../../static/images/info-avatar.jpg')} />
+              </div>
+
+              <div className="info left">
+                <div className="author">{this.state.details.author}</div>
+                <div className="meta">
+                  <span title="创建时间">{this.state.details.createTime}</span>
+                  <span>阅读 {this.state.details.viewTimes}</span>
+                  <span>字数 {this.state.details.wordNumber}</span>
+                  <span>喜欢 {this.state.details.starts}</span>
                 </div>
-              </Col>
-            </Row>
-            <div id="markdown-article" dangerouslySetInnerHTML={{ __html:  this.state.articleDetails.content ? marked(this.state.articleDetails.content) : null }}>
+              </div>
+              <div className="article-tag">
+                <Tag color="green">{this.state.details.tag}</Tag>
+              </div>
 
             </div>
+
+            <div id="content" dangerouslySetInnerHTML={{ __html: this.state.details.content ? marked(this.state.details.content) : null }}>
+
+            </div>
+
           </Card>
         </div>
-        <Aside className="left" />
       </div>
     );
   }
