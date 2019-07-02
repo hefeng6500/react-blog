@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {  Button, message } from 'antd';
+import { Button, message } from 'antd';
 import { withRouter } from "react-router-dom";
 import md5 from 'md5'
-// import "../css/login.css"
+import styles from './index.scss'
 
-import * as server from '../api/login'
+import * as server from '../../api/login'
 
 
 class Login extends Component {
@@ -23,7 +23,7 @@ class Login extends Component {
 	}
 
 	componentDidMount() {
-		this.getCode()
+		// this.getCode()
 	}
 
 	usernameChange(e) {
@@ -35,7 +35,7 @@ class Login extends Component {
 	}
 
 	getCode() {
-		server.getCode().then( res => {
+		server.getCode().then(res => {
 			this.setState({
 				code: res.data.data
 			})
@@ -63,9 +63,9 @@ class Login extends Component {
 			this.getCode()
 		})
 	}
-	
+
 	handleKeyDown = (e) => {
-		if(e.keyCode === 13){
+		if (e.keyCode === 13) {
 			this.login()
 		}
 	}
@@ -73,16 +73,9 @@ class Login extends Component {
 	render() {
 		return (
 			<div>
-				<div className="container">
-					<div className="userBox">
-						<h1 className="title">Wisdom Blog</h1>
-						<p className="welcome">Welcome!</p>
-						<input className="login-input" placeholder="请输入用户名" type="text" value={this.state.username} onChange={this.usernameChange} />
-						<input className="login-input" placeholder="请输入密码" type="password" value={this.state.password} onChange={this.passwordChange} />
-						<input className="login-input" placeholder="请输入验证码" type="text" value={this.state.validCode} onChange={this.validCodeChange} />
-						<div className="validCode" onClick={this.getCode} dangerouslySetInnerHTML={{ __html: this.state.code }}></div>
-						<Button className="login-btn" onClick={this.login} onKeyDown={this.handleKeyDown}>登录</Button>
-					</div>
+				<div className='login-page'>
+
+					<h1>我是</h1>
 				</div>
 			</div>
 		)

@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 
-import { Layout } from "antd";
-import { BrowserRouter } from "react-router-dom";
-import ScrollToTop from './components/ScrollToTop'
-import Header from './pages/header/index'
-import AppRouter from './AppRouter'
+
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import './App.scss'
+import Header from './pages/header/index'
+
+import Login from './pages/user/login'
+import Layout from './components/Layout/index'
 
 class App extends Component {
   constructor(props) {
@@ -16,22 +17,15 @@ class App extends Component {
   }
 
   render() {
-    const { Content, Footer } = Layout;
 
     return (
       <div className="App">
         <BrowserRouter>
-          <ScrollToTop>
-            <Layout>
-              <Header></Header>
-              <Content className='content'>
-                <AppRouter></AppRouter>
-              </Content>
-              <Footer className="footer">
-                HeFeng Blog© 2019 Created by Doctor Yang
-              </Footer>
-            </Layout>
-          </ScrollToTop>
+          <Header></Header>
+          <Switch>
+            <Route exact key={'login'} path={'/login'} component={Login} ></Route>
+            <Route exact key={'layout'} path={'/'} component={Layout} ></Route>
+          </Switch>
         </BrowserRouter>
       </div >
     );

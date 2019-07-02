@@ -9,7 +9,7 @@ class index extends Component {
     super(props);
     this.state = {
       menuItem: [
-        { id: 1, name: '首页', path: '/' },
+        { id: 1, name: '首页', path: '/index' },
         { id: 2, name: '专栏', path: '/specialColumn' },
         { id: 3, name: '文学', path: '/literature' }
       ]

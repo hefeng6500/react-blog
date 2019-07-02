@@ -9,6 +9,7 @@ import marked from '../../utils/marked';
 import 'highlight.js/styles/xcode.css';
 
 import './index.scss'
+import './marked.scss'
 
 class index extends Component {
   constructor(props) {
