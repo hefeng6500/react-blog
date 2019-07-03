@@ -9,7 +9,7 @@ import addArticle from '../pages/addArticle/index.js'
 import testRedux from '../pages/testRedux'
 
 export default [
-  { path: '/index', name: 'default', auth: false, component: index },
+  { path: '/', name: 'default', auth: false, component: index },
   { path: '/index', name: 'index', auth: false,  component: index },
   { path: '/specialColumn', name: 'specialColumn', auth: false,  component: specialColumn },
   { path: '/literature', name: 'literature', auth: false,  component: literature },

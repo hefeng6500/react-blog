@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, message } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
 import { withRouter } from "react-router-dom";
 import md5 from 'md5'
 import styles from './index.scss'
@@ -23,7 +23,7 @@ class Login extends Component {
 	}
 
 	componentDidMount() {
-		// this.getCode()
+		this.getCode()
 	}
 
 	usernameChange(e) {
@@ -70,16 +70,74 @@ class Login extends Component {
 		}
 	}
 
-	render() {
-		return (
-			<div>
-				<div className='login-page'>
+	handleSubmit = e => {
+		e.preventDefault();
+		this.props.form.validateFields((err, values) => {
+			if (!err) {
+				console.log('Received values of form: ', values);
+			}
+		});
+	};
 
-					<h1>我是</h1>
+	render() {
+		const { getFieldDecorator } = this.props.form;
+
+		return (
+			<div className="login-page">
+				<div className='login-bg'></div>
+				<div className="login-card">
+					<h1>快捷登录</h1>
+					<Form onSubmit={this.handleSubmit} className="login-form">
+						<Form.Item>
+							{getFieldDecorator('username', {
+								rules: [{ required: true, message: '请输入用户名' }],
+							})(
+								<Input
+									onChange={this.usernameChange}
+									prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+									placeholder="用户名"
+								/>,
+							)}
+						</Form.Item>
+						<Form.Item>
+							{getFieldDecorator('password', {
+								rules: [{ required: true, message: '请输入密码' }],
+							})(
+								<Input
+									onChange={this.passwordChange}
+									prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+									type="password"
+									placeholder="密码"
+								/>,
+							)}
+						</Form.Item>
+						<Form.Item>
+							<div className="valid-box">
+								{getFieldDecorator('validCode', {
+									rules: [{ required: true, message: '请输入验证码' }],
+								})(
+									<Input
+										onChange={this.validCodeChange}
+										className="valid-code-input"
+										prefix={<Icon type="barcode" style={{ color: 'rgba(0,0,0,.25)' }} />}
+										placeholder="验证码"
+									/>,
+								)}
+								<div className="valid-code" onClick={this.getCode} dangerouslySetInnerHTML={{ __html: this.state.code }}></div>
+							</div>
+						</Form.Item>
+						<Form.Item>
+							<Button type="primary" onClick={this.login} onKeyDown={this.handleKeyDown} htmlType="submit" className="login-form-button" block >
+								登 录
+          			</Button>
+						</Form.Item>
+					</Form>
 				</div>
 			</div>
 		)
 	}
 }
 
-export default withRouter(Login)
+const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(Login);
+
+export default withRouter(WrappedNormalLoginForm)

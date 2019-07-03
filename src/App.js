@@ -21,7 +21,7 @@ class App extends Component {
     return (
       <div className="App">
         <BrowserRouter>
-          <Header></Header>
+          {/* <Header></Header> */}
           <Switch>
             <Route exact key={'login'} path={'/login'} component={Login} ></Route>
             <Route exact key={'layout'} path={'/'} component={Layout} ></Route>
