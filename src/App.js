@@ -24,7 +24,7 @@ class App extends Component {
           {/* <Header></Header> */}
           <Switch>
             <Route exact key={'login'} path={'/login'} component={Login} ></Route>
-            <Route exact key={'layout'} path={'/'} component={Layout} ></Route>
+            <Route key={'layout'} path={'/'} component={Layout} ></Route>
           </Switch>
         </BrowserRouter>
       </div >
