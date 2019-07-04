@@ -1,3 +1,31 @@
-.editor-page{
-  
+@import "../../css/scssVariable.scss";
+
+.container {
+  width: $containerWidth;
+}
+.editor-page {
+}
+.title-input {
+  margin-bottom: 20px;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 26px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  outline: none;
+  padding: 5px 6px;
+  color: #000;
+  font-weight: bold;
+}
+
+.title-input::-webkit-input-placeholder,
+.title-input::-moz-placeholder,
+.title-input::-moz-placeholder,
+.title-input::-ms-input-placeholder {
+  color: #767676;
+  font-size: 24px;
+}
+.attrs{
+  margin-bottom: 20px;
 }
