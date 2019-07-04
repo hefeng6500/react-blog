@@ -18,5 +18,5 @@ export default [
   { path: '/testRedux', name: 'testRedux', component: testRedux },
 
 
-  { path: '/addArticle', name: 'article', auth: true,  component: addArticle },
+  { path: '/addArticle', name: 'addArticle', auth: false,  component: addArticle },
 ]
