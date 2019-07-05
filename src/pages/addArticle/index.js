@@ -6,8 +6,9 @@ import Card from '../../components/Card/Card.js'
 
 import './index.scss'
 import 'simplemde/dist/simplemde.min.css';
-import { Tag, Input, Tooltip, Icon, Checkbox, Radio, Select,Button  } from 'antd';
+import { Tag, Input, Tooltip, Icon, Checkbox, Radio, Select, Button, message } from 'antd';
 
+import * as service from '../../api/article.js'
 
 
 class index extends Component {
@@ -15,35 +16,38 @@ class index extends Component {
     super(props);
     this.state = {
       markdown: null,
-      tags: ['Tag 2', 'Tag 3'],
+      tags: ['javascript', 'html'],
       inputVisible: false,
       inputValue: '',
       category: ['HTML', 'CSS', 'JavaScript'],
-      forms: ['公开', '私密']
+      forms: '公开', // 发布形式
+      formsList: ['公开', '私密']
     };
   }
 
+  // 文章标签移除
   handleClose = removedTag => {
     const tags = this.state.tags.filter(tag => tag !== removedTag);
-    console.log(tags);
     this.setState({ tags });
   };
 
+  // 添加标签
   showInput = () => {
     this.setState({ inputVisible: true }, () => this.input.focus());
   };
 
+  // 添加标签文字变化
   handleInputChange = e => {
     this.setState({ inputValue: e.target.value });
   };
 
+  // 添加标签文字确认
   handleInputConfirm = () => {
     const { inputValue } = this.state;
     let { tags } = this.state;
     if (inputValue && tags.indexOf(inputValue) === -1) {
       tags = [...tags, inputValue];
     }
-    console.log(tags);
     this.setState({
       tags,
       inputVisible: false,
@@ -51,13 +55,13 @@ class index extends Component {
     });
   };
 
+  // 添加标签 refs
   saveInputRef = input => (this.input = input);
 
-  componentDidMount() {
-    this.initMarkdown()
-  }
 
-  initMarkdown() {
+
+  // 初始化MarkDown
+  initMarkdown = () => {
     this.setState((prevState, props) => {
       return {
         markdown: new SimpleMDE({
@@ -84,13 +88,72 @@ class index extends Component {
     })
   }
 
-  categoryChange() {
+  // 分类改变
+  categoryChange = () => {
 
   }
 
   // 文章类型
-  typeChange(){
+  typeChange = (value) => {
+    this.setState((state) => {
+      return {
+        type: value
+      }
+    })
+  }
 
+  // 发布形式
+  radioChange = (e) => {
+    this.setState((state) => {
+      return {
+        forms: e.target.value
+      }
+    })
+  }
+
+  // 发布博客
+  publish = () => {
+    const data = {
+      title: this.state.title,
+      content: this.state.markdown.value(),
+      tags: this.state.tags,
+      category: this.state.category,
+      type: this.state.type,
+      forms: this.state.forms
+    }
+    service.publish(data).then(res => {
+      message.success('恭喜你，发布成功！');
+    }).catch(err => {
+      console.log(err)
+      message.error('发布失败！');
+    })
+  }
+
+  // 保存草稿
+  saveDraft = () => {
+    const data = {
+      title: this.state.title,
+      content: this.state.markdown.value(),
+      tags: this.state.tags,
+      category: this.state.category,
+      type: this.state.type,
+      forms: this.state.forms
+    }
+    service.saveDraft(data).then(res => {
+      message.success('恭喜你，保存成功！');
+    }).catch(err => {
+      console.log(err)
+      message.error('保存失败！');
+    })
+  }
+
+  // 返回
+  back = () => {
+
+  }
+
+  componentDidMount = () => {
+    this.initMarkdown()
   }
 
   render() {
@@ -113,7 +176,7 @@ class index extends Component {
               {tags.map((tag, index) => {
                 const isLongTag = tag.length > 20;
                 const tagElem = (
-                  <Tag key={tag} closable={index > -1} onClose={() => this.handleClose(tag)}>
+                  <Tag color="blue" key={tag} closable={index > -1} onClose={() => this.handleClose(tag)}>
                     {isLongTag ? `${tag.slice(0, 20)}...` : tag}
                   </Tag>
                 );
@@ -138,8 +201,8 @@ class index extends Component {
                 />
               )}
               {!inputVisible && (
-                <Tag onClick={this.showInput} style={{ background: '#fff', borderStyle: 'dashed' }}>
-                  <Icon type="plus" /> New Tag
+                <Tag onClick={this.showInput} color="blue">
+                  <Icon type="plus" /> 添加标签
                 </Tag>
               )}
             </div>
@@ -151,7 +214,7 @@ class index extends Component {
 
             <div className="attrs">
               <span>文章类型： </span>
-              <Select defaultValue="原创" style={{ width: 120 }} onChange={this.typeChange}>
+              <Select defaultValue="原创" size="small" style={{ width: 120 }} onChange={this.typeChange}>
                 <Option value="原创">原创</Option>
                 <Option value="转载">转载</Option>
                 <Option value="翻译" >翻译</Option>
@@ -159,9 +222,9 @@ class index extends Component {
             </div>
             <div className="attrs">
               <span>发布形式： </span>
-              <Radio.Group onChange={this.onChange} value={this.state.forms}>
+              <Radio.Group onChange={this.radioChange} value={this.state.forms}>
                 {
-                  this.state.forms.map((item, index) => {
+                  this.state.formsList.map((item, index) => {
                     return (
                       <Radio value={item} key={index}>{item}</Radio>
                     )
@@ -169,16 +232,16 @@ class index extends Component {
                 }
               </Radio.Group>
             </div>
-            <div>
-            <Button type="primary">
-              发布博客
-            </Button>
-            <Button type="primary">
-              保存草稿
-            </Button>
-            <Button>
-              返回
-            </Button>
+            <div className="btn-group">
+              <Button onClick={this.publish} type="primary" className="btn">
+                发布博客
+              </Button>
+              <Button type="primary" className="btn">
+                保存草稿
+              </Button>
+              <Button className="btn">
+                返回
+              </Button>
             </div>
           </div>
         </Card>

@@ -8,3 +8,19 @@ export const articleDetails = (params) => {
     params
   })
 }
+
+export const publish = (data) => {
+  return request({
+    method: 'POST',
+    url: '/api/publishArticle',
+    data
+  })
+}
+
+export const saveDraft = (data) => {
+  return request({
+    method: 'POST',
+    url: '/api/saveDraft',
+    data
+  })
+}
