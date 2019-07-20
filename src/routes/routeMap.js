@@ -5,6 +5,8 @@ import literature from '../pages/literature/index.js'
 import article from '../pages/article/index.js'
 import addArticle from '../pages/addArticle/index.js'
 
+import test from '../pages/test/index.js'
+
 
 import testRedux from '../pages/testRedux'
 
@@ -15,6 +17,7 @@ export default [
   { path: '/literature', name: 'literature', auth: false,  component: literature },
   { path: '/article/:id', name: 'article', auth: false,  component: article },
   { path: '/login', name: 'login', component: login },
+  { path: '/test', name: 'test', component: test },
   { path: '/testRedux', name: 'testRedux', component: testRedux },
 
 

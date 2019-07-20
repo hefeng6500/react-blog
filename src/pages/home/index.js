@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom"
-import * as server from "../../api/login";
+import * as service from "../../api/article";
 
 import "./index.scss";
 import Card from '../../components/Card/Card.js'
@@ -11,12 +11,25 @@ class Index extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      articleList: [
-        { id: '1', title: '前端架构师亲述：前端工程师成长之路的 N 问 及 回答', viewTimes: 1061, comments: 0, praise: 98, createTime: '2019-06-30 20:09:28', category: '视频教程', tag: 'React', describe: '' },
-        { id: '2', title: '前端架构师亲述：前端工程师成长之路的 N 问 及 回答', viewTimes: 1061, comments: 0, praise: 98, createTime: '2019-06-30 20:09:28', category: '视频教程', tag: 'React', describe: '' },
-        { id: '3', title: '前端架构师亲述：前端工程师成长之路的 N 问 及 回答', viewTimes: 1061, comments: 0, praise: 98, createTime: '2019-06-30 20:09:28', category: '视频教程', tag: 'React', describe: '' },
-      ]
+      articleList: []
     }
+  }
+
+  componentDidMount() {
+    this.getArticle()
+  }
+
+  getArticle = () => {
+    const params = {
+      // userId: this.userId
+      userId: 1,
+      type: 'list'
+    }
+    service.getArticles(params).then(res => {
+      if(res.data.data.length>0){
+        this.setState({articleList: res.data.data})
+      }
+    })
   }
 
   render() {
@@ -28,18 +41,18 @@ class Index extends Component {
               {
                 this.state.articleList.map(v => {
                   return (
-                    <List.Item key={v.id}>
+                    <List.Item key={v.article_id}>
                       <h3 className="h3-title">
-                        <Link to={'/article/' + v.id}>{v.title}</Link>
+                        <Link to={'/article/' + v.article_id}>{v.title}</Link>
                       </h3>
                       <p className="abstract">{v.title}</p>
                       <div className="meta">
-                        <span>查看 {v.viewTimes}</span>
-                        <span>评论 {v.comments}</span>
+                        <span>查看 {v.read_times}</span>
+                        <span>评论 {v.comment_times}</span>
                         <span>赞 {v.praise}</span>
                         <span className="meta"> {v.createTime}</span>
                       </div>
-                      
+
                     </List.Item>
                   )
                 })

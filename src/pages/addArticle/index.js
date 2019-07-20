@@ -10,20 +10,31 @@ import { Tag, Input, Tooltip, Icon, Checkbox, Radio, Select, Button, message } f
 
 import * as service from '../../api/article.js'
 
-
 class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
+			title: '',
       markdown: null,
       tags: ['javascript', 'html'],
       inputVisible: false,
       inputValue: '',
       category: ['HTML', 'CSS', 'JavaScript'],
-      forms: '公开', // 发布形式
-      formsList: ['公开', '私密']
+      forms: 0, // 发布形式
+      formsList: [{
+				label: '公开',
+				value: 0
+			},{
+				 label: '私密',
+				 value: 1
+			}]
     };
   }
+	
+	// 文章标题改变
+	titleChange = (e) => {
+		this.setState({title: e.target.value})
+	}
 
   // 文章标签移除
   handleClose = removedTag => {
@@ -114,12 +125,15 @@ class index extends Component {
   // 发布博客
   publish = () => {
     const data = {
+			userId: 1,
+			createTime: Date.now(),
+			lastModify: '',
       title: this.state.title,
       content: this.state.markdown.value(),
       tags: this.state.tags,
       category: this.state.category,
       type: this.state.type,
-      forms: this.state.forms
+      forms: this.state.forms,
     }
     service.publish(data).then(res => {
       message.success('恭喜你，发布成功！');
@@ -132,13 +146,19 @@ class index extends Component {
   // 保存草稿
   saveDraft = () => {
     const data = {
+      userId: '',
+      createTime: Date.now(),
+      lastModify: '',
       title: this.state.title,
       content: this.state.markdown.value(),
       tags: this.state.tags,
       category: this.state.category,
       type: this.state.type,
-      forms: this.state.forms
+      forms: this.state.forms,
     }
+		
+
+	
     service.saveDraft(data).then(res => {
       message.success('恭喜你，保存成功！');
     }).catch(err => {
@@ -164,7 +184,7 @@ class index extends Component {
       <div className="editor-page container">
         <Card>
           <div className="title">
-            <input className="title-input" placeholder="请输入文章标题" />
+            <input className="title-input" placeholder="请输入文章标题" value={this.state.title} onChange={this.titleChange} />
           </div>
           <div title="添加与修改文章" width="1200px">
             <textarea id="editor" style={{ marginBottom: 20, width: 800 }} size="large" rows={6} />
@@ -215,9 +235,9 @@ class index extends Component {
             <div className="attrs">
               <span>文章类型： </span>
               <Select defaultValue="原创" size="small" style={{ width: 120 }} onChange={this.typeChange}>
-                <Option value="原创">原创</Option>
-                <Option value="转载">转载</Option>
-                <Option value="翻译" >翻译</Option>
+                <Option value="0">原创</Option>
+                <Option value="1">转载</Option>
+                <Option value="2" >翻译</Option>
               </Select>
             </div>
             <div className="attrs">
@@ -226,7 +246,7 @@ class index extends Component {
                 {
                   this.state.formsList.map((item, index) => {
                     return (
-                      <Radio value={item} key={index}>{item}</Radio>
+                      <Radio value={item.value} key={index}>{item.label}</Radio>
                     )
                   })
                 }

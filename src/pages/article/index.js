@@ -28,10 +28,12 @@ class index extends Component {
   // 获取文章详情
   getDetails = () => {
     const params = {
-      id: this.props.match.params.id
+      user_id: 1,
+      article_id: this.props.match.params.id,
+      type: 'details'
     }
     service.articleDetails(params).then(res => {
-      let response = JSON.parse(JSON.stringify(res))
+      let response = JSON.parse(JSON.stringify(res.data.data))
       this.setState((state) => {
         return {
           details: response
@@ -40,8 +42,6 @@ class index extends Component {
     })
   }
   render() {
-
-
     return (
       <div className="container">
         <div className="article-panel left">
@@ -54,16 +54,16 @@ class index extends Component {
               </div>
 
               <div className="info left">
-                <div className="author">{this.state.details.author}</div>
+                <div className="author">{this.state.details.username}</div>
                 <div className="meta">
-                  <span title="创建时间">{this.state.details.createTime}</span>
-                  <span>阅读 {this.state.details.viewTimes}</span>
-                  <span>字数 {this.state.details.wordNumber}</span>
-                  <span>喜欢 {this.state.details.starts}</span>
+                  <span title="创建时间">{this.state.details.create_time}</span>
+                  <span>阅读 {this.state.details.read_times}</span>
+                  <span>字数 {this.state.details.numbers}</span>
+                  <span>喜欢 {this.state.details.praise}</span>
                 </div>
               </div>
               <div className="article-tag">
-                <Tag color="green">{this.state.details.tag}</Tag>
+                <Tag color="green">{this.state.details.tags}</Tag>
               </div>
 
             </div>

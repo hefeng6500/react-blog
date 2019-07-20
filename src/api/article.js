@@ -1,10 +1,17 @@
 import request from '../utils/axios/request.js'
 
+export const getArticles = (params) => {
+  return request({
+    method: 'GET',
+    url: '/api/getArticles',
+    params
+  })
+}
+
 export const articleDetails = (params) => {
   return request({
     method: 'GET',
-    // url: '/api/getArticleDetails',
-    url: '/mocks/article.json',
+    url: '/api/getArticles',
     params
   })
 }
