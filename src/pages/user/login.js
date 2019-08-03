@@ -11,7 +11,7 @@ class Login extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			username: "admin",
+			username: "行者无疆",
 			password: "hefeng6500",
 			code: "", // 服务器返回的验证码
 			validCode: ""
@@ -74,7 +74,7 @@ class Login extends Component {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
-				console.log('Received values of form: ', values);
+				// console.log('Received values of form: ', values);
 			}
 		});
 	};

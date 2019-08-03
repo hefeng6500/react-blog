@@ -28,8 +28,8 @@ class index extends Component {
   // 获取文章详情
   getDetails = () => {
     const params = {
-      user_id: 1,
-      article_id: this.props.match.params.id,
+      userId: 1,
+      articleId: this.props.match.params.id,
       type: 'details'
     }
     service.articleDetails(params).then(res => {

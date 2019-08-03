@@ -28,7 +28,7 @@ class App extends Component {
                 <AppRouter></AppRouter>
               </Content>
               <Footer className="footer">
-                HeFeng Blog© 2019 Created by Doctor Yang
+                HeFeng Blog© 2019 Created by Doctor Yang | 粤ICP备19012365号
               </Footer>
             </Layout>
           </ScrollToTop>
