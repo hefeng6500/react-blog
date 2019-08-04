@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import { withRouter } from "react-router-dom";
 import md5 from 'md5'
-import styles from './index.scss'
+import './index.scss'
 
 import * as server from '../../api/login'
 
@@ -64,16 +64,11 @@ class Login extends Component {
 		})
 	}
 
-	handleKeyDown = (e) => {
-		if (e.keyCode === 13) {
-			this.login()
-		}
-	}
-
 	handleSubmit = e => {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
+				this.login()
 				// console.log('Received values of form: ', values);
 			}
 		});
@@ -127,7 +122,7 @@ class Login extends Component {
 							</div>
 						</Form.Item>
 						<Form.Item>
-							<Button type="primary" onClick={this.login} onKeyDown={this.handleKeyDown} htmlType="submit" className="login-form-button" block >
+							<Button type="primary" htmlType="submit" className="login-form-button" block >
 								登 录
           			</Button>
 						</Form.Item>

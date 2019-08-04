@@ -1,7 +1,14 @@
 @import "../../css/scssVariable.scss";
 
 .article-panel {
-  width: $articlePanel;
+  width: $articleWidth;
+}
+
+.catalog-panel {
+  margin-left: 10px;
+  width: $catalogWidth;
+  position: sticky;
+  top: 74px;
 }
 
 .title {
@@ -34,14 +41,11 @@
   p {
     margin: 0;
   }
-  
 }
-.article-tag{
+.article-tag {
   float: right;
   line-height: 50px;
 }
-
-
 
 #markdown-article {
   font-size: 15px;

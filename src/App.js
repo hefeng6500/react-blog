@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import './App.scss'
-import Header from './pages/header/index'
+// import Header from './pages/header/index'
 
 import Login from './pages/user/login'
 import Layout from './components/Layout/index'

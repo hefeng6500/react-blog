@@ -4,7 +4,7 @@ import * as service from "../../api/article";
 
 import "./index.scss";
 import Card from '../../components/Card/Card.js'
-import { List, Icon } from 'antd'
+import { List } from 'antd'
 import Aside from '../aside'
 
 class Index extends Component {
