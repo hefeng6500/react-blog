@@ -29,7 +29,11 @@ class index extends Component {
       markdown: null,
       tags: [],
       inputVisible: false,
+      catalogInputVisible: false,
+      catalogTags: [],
+      newCatalogValue: '',
       inputValue: '',
+      checkedList: [], // 文章分类选中
       category: ['HTML', 'CSS', 'JavaScript', 'Vue', 'React', '服务器运维'],
       forms: 0, // 发布形式
       formsList: [
@@ -57,7 +61,7 @@ class index extends Component {
   };
 
   // 添加标签
-  showInput = () => {
+  newTag = () => {
     this.setState ({inputVisible: true}, () => this.input.focus ());
   };
 
@@ -82,6 +86,32 @@ class index extends Component {
 
   // 添加标签 refs
   saveInputRef = input => (this.input = input);
+
+
+
+  // 添加分类
+  newCatalog = () => {
+    this.setState ({catalogInputVisible: true}, () => this.input.focus ());
+  };
+  // 添加新分类文字变化
+  catalogInputChange = e => {
+    this.setState ({newCatalogValue: e.target.value});
+  };
+  catalogInputConfirm = () => {
+    const {newCatalogValue} = this.state;
+    let {catalogTags} = this.state;
+    if (newCatalogValue && catalogTags.indexOf (newCatalogValue) === -1) {
+      catalogTags = [...catalogTags, newCatalogValue];
+    }
+    this.setState ({
+      catalogTags,
+      catalogInputVisible: false,
+      newCatalogValue: '',
+    });
+  };
+
+  // 添加新分类
+  saveInputCatalog = input => (this.input = input);
 
   // 初始化MarkDown
   initMarkdown = () => {
@@ -112,7 +142,11 @@ class index extends Component {
   };
 
   // 分类改变
-  categoryChange = () => {};
+  categoryChange = checkedList => {
+    this.setState ({
+      checkedList,
+    });
+  };
 
   // 文章类型
   typeChange = value => {
@@ -137,11 +171,11 @@ class index extends Component {
     const data = {
       userId: 1,
       createTime: Date.now (),
-      lastModify: '',
+      lastModify: Date.now (),
       title: this.state.title,
       content: this.state.markdown.value (),
       tags: this.state.tags,
-      category: this.state.category,
+      category: this.state.checkedList,
       type: this.state.type,
       forms: this.state.forms,
     };
@@ -165,7 +199,7 @@ class index extends Component {
       title: this.state.title,
       content: this.state.markdown.value (),
       tags: this.state.tags,
-      category: this.state.category,
+      category: this.state.checkedList,
       type: this.state.type,
       forms: this.state.forms,
     };
@@ -191,7 +225,14 @@ class index extends Component {
   };
 
   render () {
-    const {tags, inputVisible, inputValue} = this.state;
+    const {
+      tags,
+      inputVisible,
+      catalogInputVisible,
+      inputValue,
+      catalogTags,
+      newCatalogValue,
+    } = this.state;
     const {Option} = Select;
 
     if (this.state.back) {
@@ -251,18 +292,57 @@ class index extends Component {
                   onPressEnter={this.handleInputConfirm}
                 />}
               {!inputVisible &&
-                <Tag onClick={this.showInput} color="blue">
+                <Tag onClick={this.newTag} color="blue">
                   <Icon type="plus" /> 添加标签
                 </Tag>}
             </div>
 
             <div className="attrs">
               <span>文章分类： </span>
-              <Checkbox.Group
-                options={this.state.category}
-                defaultValue={['Apple']}
-                onChange={this.categoryChange}
-              />
+              <div className="category">
+                {catalogTags.map ((tag, index) => {
+                  const isLongTag = tag.length > 20;
+                  const tagElem = (
+                    <Tag
+                      color="blue"
+                      key={tag}
+                      closable={index > -1}
+                      onClose={() => this.handleClose (tag)}
+                    >
+                      {isLongTag ? `${tag.slice (0, 20)}...` : tag}
+                    </Tag>
+                  );
+                  return isLongTag
+                    ? <Tooltip title={tag} key={tag}>
+                        {tagElem}
+                      </Tooltip>
+                    : tagElem;
+                })}
+                {catalogInputVisible &&
+                  <Input
+                    ref={this.saveInputCatalog}
+                    type="text"
+                    size="small"
+                    style={{width: 78}}
+                    value={newCatalogValue}
+                    onChange={this.catalogInputChange}
+                    onBlur={this.catalogInputConfirm}
+                    onPressEnter={this.handleInputConfirm}
+                  />}
+                {!catalogInputVisible &&
+                  <Tag onClick={this.newCatalog} color="blue">
+                    <Icon type="plus" /> 添加新分类
+                  </Tag>}
+
+                <div className="category-box">
+                  <Checkbox.Group
+                    className="item"
+                    options={this.state.category}
+                    defaultValue={[]}
+                    onChange={this.categoryChange}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="attrs">
