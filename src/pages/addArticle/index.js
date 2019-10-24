@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-29 17:16:52
+ * @LastEditTime: 2019-06-29 17:16:52
+ * @LastEditors: your name
+ */
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 import SimpleMDE from 'simplemde';

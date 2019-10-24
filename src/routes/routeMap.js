@@ -3,7 +3,7 @@ import Loadable from 'react-loadable';
 
 //通用的过场组件
 const loadingComponent = () => {
-  return <div>loading</div>;
+  return <div></div>;
 };
 
 const routes = [

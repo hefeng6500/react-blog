@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-29 17:16:52
+ * @LastEditTime: 2019-06-29 17:16:52
+ * @LastEditors: your name
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -6,7 +13,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import './css/reset.css'
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+
 import './index.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));

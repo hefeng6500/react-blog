@@ -10,6 +10,15 @@
   position: sticky;
   top: 74px;
 }
+.article-toc{
+  width: 280px;
+  margin-left: 20px;
+  
+}
+.article-menu{
+  background: #fff;
+  border-radius: 4px;
+}
 
 .title {
   margin: 20px 0 0;
@@ -51,3 +60,9 @@
   font-size: 15px;
   line-height: 27px;
 }
+
+.article-menu .title-anchor.active {
+  border-left: 2px solid #007fff;
+}
+
+

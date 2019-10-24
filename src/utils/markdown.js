@@ -1,10 +1,18 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-04 14:27:45
+ * @LastEditTime: 2019-10-19 20:45:31
+ * @LastEditors: Please set LastEditors
+ */
 // https://www.cherylgood.cn/detail/5bdaf4722382b4646c27143b.html
-const highlight = require("highlight.js");
-const marked = require("marked");
+const highlight = require ('highlight.js');
+const marked = require ('marked');
 const tocObj = {
   add: function (text, level) {
-    var anchor = `#toc${level}${++this.index}`;
-    this.toc.push({ anchor: anchor, level: level, text: text });
+    var anchor = `heading-${this.index}`;
+    this.index++;
+    this.toc.push ({anchor: anchor, level: level, text: text});
     return anchor;
   },
   // 使用堆栈的方式处理嵌套的ul,li，level即ul的嵌套层次，1是最外层
@@ -17,41 +25,41 @@ const tocObj = {
   // </ul>
   toHTML: function () {
     let levelStack = [];
-    let result = "";
+    let result = '';
     const addStartUL = () => {
       result += '<ul class="anchor-ul" id="anchor-fix">';
     };
     const addEndUL = () => {
-      result += "</ul>\n";
+      result += '</ul>\n';
     };
     const addLI = (anchor, text) => {
       result +=
-        '<li><a class="toc-link" href="#' + anchor + '">' + text + "<a></li>\n";
+        '<li><a class="toc-link" href="#' + anchor + '">' + text + '<a></li>\n';
     };
 
-    this.toc.forEach(function (item) {
-      let levelIndex = levelStack.indexOf(item.level);
+    this.toc.forEach (function (item) {
+      let levelIndex = levelStack.indexOf (item.level);
       // 没有找到相应level的ul标签，则将li放入新增的ul中
       if (levelIndex === -1) {
-        levelStack.unshift(item.level);
-        addStartUL();
-        addLI(item.anchor, item.text);
-      } // 找到了相应level的ul标签，并且在栈顶的位置则直接将li放在此ul下
-      else if (levelIndex === 0) {
-        addLI(item.anchor, item.text);
-      } // 找到了相应level的ul标签，但是不在栈顶位置，需要将之前的所有level出栈并且打上闭合标签，最后新增li
-      else {
+        levelStack.unshift (item.level);
+        addStartUL ();
+        addLI (item.anchor, item.text);
+      } else if (levelIndex === 0) {
+        // 找到了相应level的ul标签，并且在栈顶的位置则直接将li放在此ul下
+        addLI (item.anchor, item.text);
+      } else {
+        // 找到了相应level的ul标签，但是不在栈顶位置，需要将之前的所有level出栈并且打上闭合标签，最后新增li
         while (levelIndex--) {
-          levelStack.shift();
-          addEndUL();
+          levelStack.shift ();
+          addEndUL ();
         }
-        addLI(item.anchor, item.text);
+        addLI (item.anchor, item.text);
       }
     });
     // 如果栈中还有level，全部出栈打上闭合标签
     while (levelStack.length) {
-      levelStack.shift();
-      addEndUL();
+      levelStack.shift ();
+      addEndUL ();
     }
     // 清理先前数据供下次使用
     this.toc = [];
@@ -59,47 +67,59 @@ const tocObj = {
     return result;
   },
   toc: [],
-  index: 0
+  index: 0,
 };
 
 class MarkUtils {
-  constructor() {
-    this.rendererMD = new marked.Renderer();
+  constructor () {
+    this.rendererMD = new marked.Renderer ();
     this.rendererMD.heading = function (text, level, raw) {
-      var anchor = tocObj.add(text, level);
-      return `<h${level} id=${anchor}>${text}</h${level}>\n`;
+      var anchor = tocObj.add (text, level);
+      return `<h${level} class="anchor" id=${anchor}>${text}</h${level}>\n`;
     };
     this.rendererMD.table = function (header, body) {
-      return '<table class="table" border="0" cellspacing="0" cellpadding="0">' + header + body + '</table>'
-    }
-    highlight.configure({ useBR: true });
-    marked.setOptions({
+      return (
+        '<table class="table" border="0" cellspacing="0" cellpadding="0">' +
+        header +
+        body +
+        '</table>'
+      );
+    };
+    highlight.configure ({useBR: true});
+    marked.setOptions ({
       renderer: this.rendererMD,
-      headerIds: false,
+      breaks: true,
       gfm: true,
-      tables: true,
-      breaks: false,
+      headerIds: true,
+      headerPrefix: 'heading-',
+      langPrefix: 'language-',
+      mangle: true,
       pedantic: false,
       sanitize: false,
-      smartLists: true,
+      sanitizer: null,
+      silent: false,
+      smartLists: false,
       smartypants: false,
+      xhtml: false,
       highlight: function (code) {
-        return highlight.highlightAuto(code).value;
-      }
+        return highlight.highlightAuto (code).value;
+      },
     });
   }
 
-  async marked(data) {
+  async marked (data) {
     if (data) {
-      let content = await marked(data);
-      let toc = tocObj.toHTML();
-      return { content: content, toc: toc };
+      data = data.replace('↵', '/\n')
+      let content = await marked (data);
+      let toc = tocObj.toHTML ();
+      
+      return {content: content, toc: toc};
     } else {
       return null;
     }
   }
 }
 
-const markdown = new MarkUtils();
+const markdown = new MarkUtils ();
 
 export default markdown;

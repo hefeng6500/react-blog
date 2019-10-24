@@ -1,19 +1,15 @@
 import React, {Component} from 'react';
-import {Tag, Skeleton} from 'antd';
+import {Tag, Skeleton, Affix} from 'antd';
 
 import Card from '../../components/Card/Card.js';
-import Catelog from './catalog/index';
-// import Aside from '../aside';
 
 import * as service from '../../api/article';
-import markdown from '../../utils/markdown.js';
-import 'highlight.js/styles/atom-one-dark.css';
 
 import './index.scss';
-import './marked.scss';
 
-const highlight = require ('highlight.js');
-const marked = require ('marked');
+import Markdown from '../../components/Markdown';
+import MarkNav from 'markdown-navbar';
+import 'markdown-navbar/dist/navbar.css';
 
 class index extends Component {
   constructor (props) {
@@ -41,62 +37,12 @@ class index extends Component {
     service.articleDetails (params).then (res => {
       const detail = res.data.data;
 
-      const article = markdown.marked (res.data.data.content);
-
-      article.then (response => {
-        detail.content = response.content;
-        detail.toc = response.toc;
-        console.log ('detail.toc :', detail.toc);
-
-        this.setState (state => {
-          return {
-            loading: false,
-            details: detail,
-          };
-        });
+      this.setState (state => {
+        return {
+          loading: false,
+          details: detail,
+        };
       });
-
-      // ==============================================
-      // Get reference
-      // const renderer = new marked.Renderer ();
-      // let index = 0
-      // renderer.heading = function (text, level) {
-      //   // const escapedText = text.toLowerCase ().replace (/[^\w]+/g, '-');
-      //   const anchor = `heading-${level}-${++index}`;
-      //   return `
-      //     <h${level}>
-      //       <a data-id="${anchor}" class="heading">
-      //         <span class="header-link"></span>
-      //       </a>
-      //       ${text}
-      //     </h${level}>`;
-      // };
-      // marked.setOptions ({
-      //   renderer: renderer,
-      //   headerIds: false,
-      //   gfm: true,
-      //   tables: true,
-      //   breaks: false,
-      //   pedantic: false,
-      //   sanitize: false,
-      //   smartLists: true,
-      //   smartypants: false,
-      //   highlight: function (code) {
-      //     return highlight.highlightAuto (code).value;
-      //   },
-      // });
-      // let detail = {};
-      // detail.title = res.data.data.title;
-      // detail.content = marked (content);
-      // console.log (detail.content);
-
-      // this.setState (state => {
-      //   return {
-      //     details: detail,
-      //   };
-      // });
-
-      // =================================================
     });
   };
 
@@ -122,10 +68,10 @@ class index extends Component {
                   <div className="info left">
                     <div className="author">{details.username}</div>
                     <div className="meta">
-                      <span title="创建时间">{details.create_time}</span>
-                      <span>阅读 {details.read_times}</span>
-                      <span>字数 {details.numbers}</span>
-                      <span>喜欢 {details.praise}</span>
+                      <span title="">发布时间：{details.create_time} </span>
+                      <span>阅读： {details.read_times} </span>
+                      <span>字数： {details.numbers} </span>
+                      <span>喜欢： {details.praise} </span>
                     </div>
                   </div>
                   <div className="article-tag">
@@ -133,33 +79,35 @@ class index extends Component {
                   </div>
 
                 </div>
-
-                <div
-                  id="content"
-                  dangerouslySetInnerHTML={{
-                    __html: details.content,
-                  }}
-                />
+                <div className="markdown-body">
+                  <Markdown id="content" source={details.content} />
+                </div>
               </div>}
 
-            <Skeleton loading={this.state.loading} active avatar paragraph={{ rows: 6 }}>
-              
-            </Skeleton>
+            <Skeleton
+              loading={this.state.loading}
+              active
+              avatar
+              paragraph={{rows: 6}}
+            />
+
           </Card>
 
         </div>
-        {/* <div className="catalog-panel left">
-          {Toc ? <Catelog toc={Toc} /> : ''}
-        </div> */}
+        <div className="article-toc left">
+          <Affix offsetTop={74}>
+            <MarkNav
+              className="article-menu"
+              source={details.content}
+              ordered={false}
+              headingTopOffset={74}
+            />
+          </Affix>
+        </div>
 
       </div>
     );
   }
 }
 
-// const index = ({match}) => {
-//   return (
-//     <div>ID: {match.params.id}</div>
-//   )
-// }
 export default index;
