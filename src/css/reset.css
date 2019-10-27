@@ -12,9 +12,9 @@ body {
 	color: #2c3e50;
 	background-color: #f0f2f5 !important;
 }
-/* ol, ul ,dl{
+ol, ul ,dl{
 	list-style: none;
-} */
+}
 blockquote, q {
 	quotes: none;
 }

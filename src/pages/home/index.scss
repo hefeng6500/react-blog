@@ -7,8 +7,11 @@
 .main{
   width: $mainContainer
 }
-.aside{
+.right-panel{
   width: $asideContainer;
+}
+.aside{
+  // width: $asideContainer;
 }
 .pageList.ant-list-split{
   .ant-list-item{
@@ -56,3 +59,5 @@
   margin-top: 10px;
   text-align: right;
 }
+
+

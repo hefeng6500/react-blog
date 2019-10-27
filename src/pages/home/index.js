@@ -7,6 +7,7 @@ import './index.scss';
 import Card from '../../components/Card/Card.js';
 import {List} from 'antd';
 import Aside from '../aside';
+import GithubRepo from '../githubRepo';
 
 class Index extends Component {
   constructor (props) {
@@ -134,7 +135,11 @@ class Index extends Component {
             total={500}
           /> */}
         </div>
-        <Aside />
+        <div className="right-panel right">
+          <Aside />
+          <GithubRepo />
+        </div>
+
       </div>
     );
   }

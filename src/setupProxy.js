@@ -6,4 +6,8 @@ module.exports = function (app) {
             "^/api": "/api"
         }
     }));
+    app.use(proxy('/github', {
+        target: 'https://api.github.com',
+        changeOrigin: true,
+    }));
 };
